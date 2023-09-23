@@ -44,7 +44,7 @@ public class DergonHandler implements IConfigurationChanged, IPluginEnabled
 	@Override
 	public void OnPluginEnabled()
 	{
-		EntityRegister.registerEntity(Dergon.class, "Dergon", 63);
+		EntityRegister.registerEIntity(Dergon.class, "Dergon", 63);
 	}
 
 	public float handleDergonDamage(Dergon dergon, DamageSource source, float damage)
