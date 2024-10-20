@@ -24,7 +24,7 @@ public class DergonSpawner implements IConfigurationChanged
 		List<IPlayer> selectedPlayers = new ArrayList<>(0);
 		for (IPlayer player : Dergons.server.getOnlinePlayers())
 		{
-			if (player == null || Config.isNotDergonWorld(player.getWorld()))
+			if (player == null || Config.isNotDergonWorld(player.getWorld()) || !player.isSurvivalist())
 				continue;
 
 			ILocation playerLocation = player.getLocation();
