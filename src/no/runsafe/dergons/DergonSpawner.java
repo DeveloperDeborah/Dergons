@@ -50,6 +50,7 @@ public class DergonSpawner implements IConfigurationChanged
 			return "No valid/lucky players.";
 
 		IPlayer selectedPlayer = selectedPlayers.get(random.nextInt(selectedPlayers.size()));
+		selectedPlayer.sendColouredMessage(Config.Message.getDergonSpawn());
 		return "Spawning @ " + selectedPlayer.getName() + " with ID: " + handler.spawnDergon(selectedPlayer.getLocation());
 	}
 

@@ -47,6 +47,7 @@ public class Config implements IConfigurationChanged, IPluginEnabled
 		Message.dergonElytraPickup = config.getConfigValueAsString("message.dergonElytraPickup");
 		Message.dergonKillPlayer = config.getConfigValueAsString("message.dergonKillPlayer");
 		Message.inventoryFull = config.getConfigValueAsString("message.inventoryFull");
+		Message.dergonSpawn = config.getConfigValueAsString("message.dergonSpawn");
 
 		worldNames.clear();
 		worldNames.addAll(config.getConfigValueAsList("dergonWorlds"));
@@ -74,10 +75,16 @@ public class Config implements IConfigurationChanged, IPluginEnabled
 			return inventoryFull;
 		}
 
+		public static String getDergonSpawn()
+		{
+			return dergonSpawn;
+		}
+
 		private static String dergonPunchback;
 		private static String dergonElytraPickup;
 		private static String dergonKillPlayer;
 		private static String inventoryFull;
+		private static String dergonSpawn;
 	}
 
 	public static float getVexChance()
