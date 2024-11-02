@@ -126,7 +126,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 			if (!targets.isEmpty())
 			{
 				// Target a random player in 200 blocks.
-				targetEntity = players.get(random.nextInt(players.size()));
+				targetEntity = targets.get(random.nextInt(targets.size()));
 				return;
 			}
 		}
