@@ -120,16 +120,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 				// Skip the player if we're vanished, in creative mode, or in spectator mode.
 				if (isInvalidTarget(player) || isRidingPlayer(player.getName()))
 					continue;
-
-				ILocation playerLocation = player.getLocation();
-
-				if (spawnLocation != null) // If the player is greater than 50 blocks from the spawning location, we can target them.
-				{
-					if (playerLocation != null && playerLocation.distance(spawnLocation) > 50)
-						targets.add(player);
-				}
-				else
-					targets.add(player);
+				targets.add(player);
 			}
 
 			if (!targets.isEmpty())
