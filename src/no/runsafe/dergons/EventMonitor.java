@@ -99,7 +99,7 @@ public class EventMonitor implements IItemSpawn, IPlayerRightClick, IChunkUnload
 		float cloudRadius = cloud.getRadius();
 		Dergons.Debugger.debugFine("Area Effect selected with radius: " + cloudRadius);
 		RunsafeInventory inventory = player.getInventory();
-		if (inventory.getContents().size() >= inventory.getSize())
+		if (player.getInventoryFreeSpaces() < 1)
 		{
 			player.sendColouredMessage(Config.Message.getInventoryFull());
 			return true;
