@@ -457,6 +457,13 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		if (bukkitAttacker instanceof EntityHuman)
 			attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
 
+		// Don't allow non-players to attack the dergon
+		if (attacker == null)
+		{
+			getLocation().playSound(Sound.Creature.Ghast.Scream, 1, 2F);
+			return false;
+		}
+
 		// Check if the player is attacking with a punch bow
 		if (usingPunchBow(attacker))
 		{
@@ -476,7 +483,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		targetEntity = null;
 
 		// Only apply damage if the source is a player or an explosion.
-		if (attacker != null || damageSource.isExplosion())
+		if (damageSource.isExplosion())
 		{
 			// Do more damage for headshots
 			if(bodyPart != dergonHead)
@@ -485,7 +492,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		}
 
 		// Spawn in some creatures to help defend the dergon
-		if (attacker != null && random.nextFloat() < (Config.getVexChance() / 100))
+		if (random.nextFloat() < (Config.getVexChance() / 100))
 		{
 			ILocation attackerLocation = attacker.getLocation();
 			if (attackerLocation == null)
@@ -609,9 +616,11 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		if (bukkitAttacker == null || (!(bukkitAttacker instanceof EntityHuman) && !source.isExplosion()))
 			return false;
 
-		IPlayer attacker = null;
-		if (bukkitAttacker instanceof EntityHuman)
-			attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
+		if (!(bukkitAttacker instanceof EntityHuman))
+			return false;
+
+		IPlayer attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
+
 		// Check if the player is attacking with a punch bow
 		if (usingPunchBow(attacker))
 		{
