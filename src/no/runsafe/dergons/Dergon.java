@@ -133,16 +133,20 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 
 		if (spawnLocation != null)
 		{
-			// Send the dergon back to the start point.
-			targetX = spawnLocation.getX();
-			targetY = spawnLocation.getY();
-			targetZ = spawnLocation.getZ();
+			// Send the dergon back to a location near the start point.
+			targetX = spawnLocation.getX() + 25 - random.nextInt(50);
+			targetZ = spawnLocation.getZ() + 25 - random.nextInt(50);
+			targetY = spawnLocation.getY() - random.nextInt(25);
+			if (targetY < 64)
+				targetY = 64;
 		}
 		else
 		{
-			targetX = locX;
-			targetY = locY + 20;
-			targetZ = locZ;
+			targetX = locX + 25 - random.nextInt(50);
+			targetZ = locZ + 25 - random.nextInt(50);
+			targetY = locY + 25 - random.nextInt(50);
+			if (targetY < 64)
+				targetY = 64;
 		}
 
 		targetEntity = null;
