@@ -99,7 +99,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 
 			targetEntity = null;
 			targetX = locX + random.nextInt(200) - 100;
-			targetY = random.nextInt(100) + 70; // Somewhere above 70 to prevent floor clipping.
+			targetY = locY + random.nextInt(50);
 			targetZ = locZ + random.nextInt(200) - 100;
 			flyOffLocation = dergonWorld.getLocation(targetX, targetY, targetZ); // Store the target fly-off location.
 			return;
