@@ -99,7 +99,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 
 			targetEntity = null;
 			targetX = locX + random.nextInt(200) - 100;
-			targetY = random.nextInt(100) + 70; // Somewhere above 70 to prevent floor clipping.
+			targetY = locY + random.nextInt(50);
 			targetZ = locZ + random.nextInt(200) - 100;
 			flyOffLocation = dergonWorld.getLocation(targetX, targetY, targetZ); // Store the target fly-off location.
 			return;
@@ -120,16 +120,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 				// Skip the player if we're vanished, in creative mode, or in spectator mode.
 				if (isInvalidTarget(player) || isRidingPlayer(player.getName()))
 					continue;
-
-				ILocation playerLocation = player.getLocation();
-
-				if (spawnLocation != null) // If the player is greater than 50 blocks from the spawning location, we can target them.
-				{
-					if (playerLocation != null && playerLocation.distance(spawnLocation) > 50)
-						targets.add(player);
-				}
-				else
-					targets.add(player);
+				targets.add(player);
 			}
 
 			if (!targets.isEmpty())
@@ -142,16 +133,20 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 
 		if (spawnLocation != null)
 		{
-			// Send the dergon back to the start point.
-			targetX = spawnLocation.getX();
-			targetY = spawnLocation.getY();
-			targetZ = spawnLocation.getZ();
+			// Send the dergon back to a location near the start point.
+			targetX = spawnLocation.getX() + 25 - random.nextInt(50);
+			targetZ = spawnLocation.getZ() + 25 - random.nextInt(50);
+			targetY = spawnLocation.getY() - random.nextInt(25);
+			if (targetY < 64)
+				targetY = 64;
 		}
 		else
 		{
-			targetX = locX;
-			targetY = locY + 20;
-			targetZ = locZ;
+			targetX = locX + 25 - random.nextInt(50);
+			targetZ = locZ + 25 - random.nextInt(50);
+			targetY = locY + 25 - random.nextInt(50);
+			if (targetY < 64)
+				targetY = 64;
 		}
 
 		targetEntity = null;
@@ -457,6 +452,13 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		if (bukkitAttacker instanceof EntityHuman)
 			attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
 
+		// Don't allow non-players to attack the dergon
+		if (attacker == null)
+		{
+			getLocation().playSound(Sound.Creature.Ghast.Scream, 1, 2F);
+			return false;
+		}
+
 		// Check if the player is attacking with a punch bow
 		if (usingPunchBow(attacker))
 		{
@@ -476,7 +478,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		targetEntity = null;
 
 		// Only apply damage if the source is a player or an explosion.
-		if (attacker != null || damageSource.isExplosion())
+		if (damageSource.isExplosion())
 		{
 			// Do more damage for headshots
 			if(bodyPart != dergonHead)
@@ -485,7 +487,7 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		}
 
 		// Spawn in some creatures to help defend the dergon
-		if (attacker != null && random.nextFloat() < (Config.getVexChance() / 100))
+		if (random.nextFloat() < (Config.getVexChance() / 100))
 		{
 			ILocation attackerLocation = attacker.getLocation();
 			if (attackerLocation == null)
@@ -609,9 +611,11 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		if (bukkitAttacker == null || (!(bukkitAttacker instanceof EntityHuman) && !source.isExplosion()))
 			return false;
 
-		IPlayer attacker = null;
-		if (bukkitAttacker instanceof EntityHuman)
-			attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
+		if (!(bukkitAttacker instanceof EntityHuman))
+			return false;
+
+		IPlayer attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
+
 		// Check if the player is attacking with a punch bow
 		if (usingPunchBow(attacker))
 		{
