@@ -452,11 +452,11 @@ public class Dergon extends EntityInsentient implements IComplex, IMonster
 		if (bukkitAttacker instanceof EntityHuman)
 			attacker = ObjectWrapper.convert(((EntityHuman) bukkitAttacker).getBukkitEntity());
 
-		// Don't allow non-players to attack the dergon
+		// Damage dergon without recalculating target when attacker is not a player
 		if (attacker == null)
 		{
-			getLocation().playSound(Sound.Creature.Ghast.Scream, 1, 2F);
-			return false;
+			damageEntity(damageSource, damageValue);
+			return true;
 		}
 
 		// Check if the player is attacking with a punch bow
